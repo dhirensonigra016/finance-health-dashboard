@@ -26,11 +26,11 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#4572D3",
+          DEFAULT: "#9b87f5",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#4572D3",
+          DEFAULT: "#7E69AB",
           foreground: "#ffffff",
         },
         destructive: {
@@ -53,14 +53,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom ratio colors - different shades of primary color
+        // Custom ratio colors
         ratio: {
-          savings: "#4572D3",
-          expense: "#5A83D8",
-          leverage: "#6F94DD",
-          solvency: "#84A5E2",
-          debt: "#99B6E7",
-          liquidity: "#AEC7EC",
+          savings: "#9b87f5",
+          expense: "#7E69AB",
+          leverage: "#D6BCFA",
+          solvency: "#8E9196",
+          debt: "#1A1F2C",
+          liquidity: "#F1F0FB",
         },
       },
       keyframes: {
