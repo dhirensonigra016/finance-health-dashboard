@@ -4,6 +4,8 @@ import { RatioCard } from "@/components/RatioCard";
 import { fetchFinancialData } from "@/services/financeApi";
 import { ratioDescriptions } from "@/utils/ratioDescriptions";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Radar,
   RadarChart,
@@ -15,6 +17,7 @@ import {
 } from "recharts";
 
 const Index = () => {
+  const navigate = useNavigate();
   const { data, isLoading, error } = useQuery({
     queryKey: ["financialData"],
     queryFn: fetchFinancialData,
@@ -98,9 +101,12 @@ const Index = () => {
         className="max-w-7xl mx-auto"
       >
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Financial Health Dashboard
-          </h1>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900">
+              Financial Health Dashboard
+            </h1>
+            <Button onClick={() => navigate("/input")}>Update Data</Button>
+          </div>
           <p className="text-lg text-gray-600 mb-8">
             Track and improve your financial ratios
           </p>
