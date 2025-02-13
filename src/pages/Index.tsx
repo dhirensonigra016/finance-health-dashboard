@@ -60,12 +60,6 @@ const Index = () => {
           fill: getColorForValue(data.savings_ratio),
         },
         {
-          name: "Expense",
-          value: data.expense_ratio,
-          fullMark: 100,
-          fill: getColorForValue(data.expense_ratio),
-        },
-        {
           name: "Leverage",
           value: data.leverage_ratio,
           fullMark: 100,
@@ -76,6 +70,12 @@ const Index = () => {
           value: data.solvency_ratio,
           fullMark: 100,
           fill: getColorForValue(data.solvency_ratio),
+        },
+        {
+          name: "Expense",
+          value: data.expense_ratio,
+          fullMark: 100,
+          fill: getColorForValue(data.expense_ratio),
         },
         {
           name: "Debt",
