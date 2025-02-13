@@ -12,12 +12,12 @@ const InputData = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    savings_ratio: "",
-    expense_ratio: "",
-    leverage_ratio: "",
-    solvency_ratio: "",
-    debt_to_income_ratio: "",
-    liquidity_ratio: "",
+    net_monthly_income: "",
+    net_monthly_expenses: "",
+    net_monthly_emis: "",
+    total_assets: "",
+    total_loans: "",
+    total_liquid_assets: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,19 +28,40 @@ const InputData = () => {
     }));
   };
 
+  const calculateRatios = (data: Record<string, string>) => {
+    const values = Object.entries(data).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: parseFloat(value) || 0,
+      }),
+      {} as Record<string, number>
+    );
+
+    const {
+      net_monthly_income,
+      net_monthly_expenses,
+      net_monthly_emis,
+      total_assets,
+      total_loans,
+      total_liquid_assets,
+    } = values;
+
+    return {
+      savings_ratio:
+        ((net_monthly_income - net_monthly_expenses) / net_monthly_income) * 100,
+      expense_ratio: (net_monthly_expenses / net_monthly_income) * 100,
+      leverage_ratio: (total_loans / total_assets) * 100,
+      solvency_ratio: ((total_assets - total_loans) / total_assets) * 100,
+      liquidity_ratio: (total_liquid_assets / net_monthly_income) * 100,
+      debt_to_income_ratio: (net_monthly_emis / net_monthly_income) * 100,
+    };
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Convert all values to numbers
-      const numericData = Object.entries(formData).reduce(
-        (acc, [key, value]) => ({
-          ...acc,
-          [key]: parseFloat(value),
-        }),
-        {}
-      );
-
-      await updateFinancialData(numericData);
+      const ratios = calculateRatios(formData);
+      await updateFinancialData(ratios);
       toast({
         title: "Success",
         description: "Financial data updated successfully",
@@ -68,7 +89,7 @@ const InputData = () => {
             Update Financial Data
           </h1>
           <p className="mt-2 text-gray-600">
-            Enter your financial ratios to update the dashboard
+            Enter your financial information to calculate ratios
           </p>
         </div>
 
@@ -77,121 +98,121 @@ const InputData = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label
-                  htmlFor="savings_ratio"
+                  htmlFor="net_monthly_income"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Savings Ratio (%)
+                  Net Monthly Income
                 </label>
                 <Input
-                  id="savings_ratio"
-                  name="savings_ratio"
+                  id="net_monthly_income"
+                  name="net_monthly_income"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.savings_ratio}
+                  value={formData.net_monthly_income}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter savings ratio"
+                  placeholder="Enter net monthly income"
                 />
               </div>
 
               <div className="space-y-2">
                 <label
-                  htmlFor="expense_ratio"
+                  htmlFor="net_monthly_expenses"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Expense Ratio (%)
+                  Net Monthly Expenses
                 </label>
                 <Input
-                  id="expense_ratio"
-                  name="expense_ratio"
+                  id="net_monthly_expenses"
+                  name="net_monthly_expenses"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.expense_ratio}
+                  value={formData.net_monthly_expenses}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter expense ratio"
+                  placeholder="Enter net monthly expenses"
                 />
               </div>
 
               <div className="space-y-2">
                 <label
-                  htmlFor="leverage_ratio"
+                  htmlFor="net_monthly_emis"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Leverage Ratio (%)
+                  Net Monthly EMIs
                 </label>
                 <Input
-                  id="leverage_ratio"
-                  name="leverage_ratio"
+                  id="net_monthly_emis"
+                  name="net_monthly_emis"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.leverage_ratio}
+                  value={formData.net_monthly_emis}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter leverage ratio"
+                  placeholder="Enter net monthly EMIs"
                 />
               </div>
 
               <div className="space-y-2">
                 <label
-                  htmlFor="solvency_ratio"
+                  htmlFor="total_assets"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Solvency Ratio (%)
+                  Total Assets
                 </label>
                 <Input
-                  id="solvency_ratio"
-                  name="solvency_ratio"
+                  id="total_assets"
+                  name="total_assets"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.solvency_ratio}
+                  value={formData.total_assets}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter solvency ratio"
+                  placeholder="Enter total assets"
                 />
               </div>
 
               <div className="space-y-2">
                 <label
-                  htmlFor="debt_to_income_ratio"
+                  htmlFor="total_loans"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Debt to Income Ratio (%)
+                  Total Loans
                 </label>
                 <Input
-                  id="debt_to_income_ratio"
-                  name="debt_to_income_ratio"
+                  id="total_loans"
+                  name="total_loans"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.debt_to_income_ratio}
+                  value={formData.total_loans}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter debt to income ratio"
+                  placeholder="Enter total loans"
                 />
               </div>
 
               <div className="space-y-2">
                 <label
-                  htmlFor="liquidity_ratio"
+                  htmlFor="total_liquid_assets"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Liquidity Ratio (%)
+                  Total Liquid Assets
                 </label>
                 <Input
-                  id="liquidity_ratio"
-                  name="liquidity_ratio"
+                  id="total_liquid_assets"
+                  name="total_liquid_assets"
                   type="number"
                   step="0.01"
                   required
-                  value={formData.liquidity_ratio}
+                  value={formData.total_liquid_assets}
                   onChange={handleChange}
                   className="block w-full"
-                  placeholder="Enter liquidity ratio"
+                  placeholder="Enter total liquid assets"
                 />
               </div>
             </div>
@@ -204,7 +225,7 @@ const InputData = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit">Update Data</Button>
+              <Button type="submit">Calculate & Update</Button>
             </div>
           </form>
         </Card>

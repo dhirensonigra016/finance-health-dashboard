@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { RatioCard } from "@/components/RatioCard";
 import { fetchFinancialData } from "@/services/financeApi";
@@ -44,11 +43,23 @@ const Index = () => {
     );
   }
 
-  const getColorForValue = (value: number) => {
-    // Define thresholds for color transitions
-    if (value < 30) return "#ea384c"; // Red for low values
-    if (value < 60) return "#f7b955"; // Orange for medium values
-    return "#0EA5E9"; // Blue for high values
+  const getColorForValue = (value: number, type: string) => {
+    switch (type) {
+      case "savings":
+        return value < 20 ? "#ea384c" : "#0EA5E9"; // Red if < 20%, else green
+      case "expense":
+        return value > 80 ? "#ea384c" : "#0EA5E9"; // Red if > 80%, else green
+      case "leverage":
+        return value > 50 ? "#ea384c" : "#0EA5E9"; // Red if > 50%, else green
+      case "solvency":
+        return value < 50 ? "#ea384c" : "#0EA5E9"; // Red if < 50%, else green
+      case "liquidity":
+        return value < 500 ? "#ea384c" : "#0EA5E9"; // Red if < 500%, else green
+      case "debt":
+        return value > 40 ? "#ea384c" : "#0EA5E9"; // Red if > 40%, else green
+      default:
+        return "#0EA5E9";
+    }
   };
 
   const chartData = data
@@ -57,37 +68,37 @@ const Index = () => {
           name: "Savings",
           value: data.savings_ratio,
           fullMark: 100,
-          fill: getColorForValue(data.savings_ratio),
+          fill: getColorForValue(data.savings_ratio, "savings"),
         },
         {
           name: "Leverage",
           value: data.leverage_ratio,
           fullMark: 100,
-          fill: getColorForValue(data.leverage_ratio),
-        },
-        {
-          name: "Solvency",
-          value: data.solvency_ratio,
-          fullMark: 100,
-          fill: getColorForValue(data.solvency_ratio),
-        },
-        {
-          name: "Expense",
-          value: data.expense_ratio,
-          fullMark: 100,
-          fill: getColorForValue(data.expense_ratio),
+          fill: getColorForValue(data.leverage_ratio, "leverage"),
         },
         {
           name: "Debt",
           value: data.debt_to_income_ratio,
           fullMark: 100,
-          fill: getColorForValue(data.debt_to_income_ratio),
+          fill: getColorForValue(data.debt_to_income_ratio, "debt"),
+        },
+        {
+          name: "Expense",
+          value: data.expense_ratio,
+          fullMark: 100,
+          fill: getColorForValue(data.expense_ratio, "expense"),
+        },
+        {
+          name: "Solvency",
+          value: data.solvency_ratio,
+          fullMark: 100,
+          fill: getColorForValue(data.solvency_ratio, "solvency"),
         },
         {
           name: "Liquidity",
           value: data.liquidity_ratio,
           fullMark: 100,
-          fill: getColorForValue(data.liquidity_ratio),
+          fill: getColorForValue(data.liquidity_ratio, "liquidity"),
         },
       ]
     : [];
