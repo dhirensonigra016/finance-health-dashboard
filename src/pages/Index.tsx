@@ -154,24 +154,48 @@ const Index = () => {
                 <PolarGrid stroke="#E3E3E4" />
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                {[
-                  "savings",
-                  "leverage",
-                  "debt",
-                  "expense",
-                  "solvency",
-                  "liquidity",
-                ].map((key, index) => (
-                  <Radar
-                    key={key}
-                    name={key}
-                    dataKey="value"
-                    data={[chartData[index]]}
-                    stroke={chartData[index]?.fill}
-                    fill={chartData[index]?.fill}
-                    fillOpacity={0.6}
-                  />
-                ))}
+                <Radar
+                  name="Savings"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.savings_ratio || 0, "savings")}
+                  fill={getColorForValue(data?.savings_ratio || 0, "savings")}
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Leverage"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.leverage_ratio || 0, "leverage")}
+                  fill={getColorForValue(data?.leverage_ratio || 0, "leverage")}
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Debt"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.debt_to_income_ratio || 0, "debt")}
+                  fill={getColorForValue(data?.debt_to_income_ratio || 0, "debt")}
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Expense"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.expense_ratio || 0, "expense")}
+                  fill={getColorForValue(data?.expense_ratio || 0, "expense")}
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Solvency"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.solvency_ratio || 0, "solvency")}
+                  fill={getColorForValue(data?.solvency_ratio || 0, "solvency")}
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Liquidity"
+                  dataKey="value"
+                  stroke={getColorForValue(data?.liquidity_ratio || 0, "liquidity")}
+                  fill={getColorForValue(data?.liquidity_ratio || 0, "liquidity")}
+                  fillOpacity={0.6}
+                />
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
