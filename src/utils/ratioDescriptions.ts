@@ -9,7 +9,7 @@ export const ratioDescriptions = {
   expense: {
     title: "Expense Ratio",
     description: "Percentage of income spent on expenses",
-    recommendation: "Try to keep expenses below 70% of your income",
+    recommendation: "Try to keep expenses below 80% of your income",
     colorClass: "text-ratio-expense",
   },
   leverage: {
@@ -21,19 +21,19 @@ export const ratioDescriptions = {
   solvency: {
     title: "Solvency Ratio",
     description: "Ability to meet long-term financial obligations",
-    recommendation: "Keep solvency ratio above 150%",
+    recommendation: "Keep solvency ratio above 50%",
     colorClass: "text-ratio-solvency",
   },
   debt: {
     title: "Debt to Income Ratio",
     description: "Monthly debt payments relative to monthly income",
-    recommendation: "Aim for a debt-to-income ratio below 30%",
+    recommendation: "Aim for a debt-to-income ratio below 40%",
     colorClass: "text-ratio-debt",
   },
   liquidity: {
     title: "Liquidity Ratio",
     description: "Ability to cover short-term obligations",
-    recommendation: "Maintain a liquidity ratio above 2.0",
+    recommendation: "Maintain a liquidity ratio above 6.0",
     colorClass: "text-ratio-liquidity",
   },
 };

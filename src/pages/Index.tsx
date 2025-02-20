@@ -72,9 +72,20 @@ const Index = () => {
         },
         {
           name: "Liquidity",
-          value: Math.min(data.liquidity_ratio * 10, 10) * 10,
+          value: Math.min(data.liquidity_ratio, 10) * 10,
           fullMark: 100,
         },
+      ]
+    : [];
+
+  const orderedChartData = data
+    ? [
+        chartData[0], // Savings
+        chartData[2], // Leverage
+        chartData[4], // Debt
+        chartData[1], // Expense (opposite to Savings)
+        chartData[3], // Solvency (opposite to Leverage)
+        chartData[5], // Liquidity
       ]
     : [];
 
@@ -104,7 +115,7 @@ const Index = () => {
 
           <div className="w-full h-[400px] bg-white rounded-lg shadow-lg p-4 mb-12">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={orderedChartData}>
                 <PolarGrid stroke="#E3E3E4" />
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
