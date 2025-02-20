@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { RatioCard } from "@/components/RatioCard";
 import { fetchFinancialData } from "@/services/financeApi";
@@ -45,11 +44,9 @@ const Index = () => {
   }
 
   const getColorForValue = (value: number, type: string) => {
-    // Colors for interpolation
     const red = "#ea384c";
     const green = "#0EA5E9";
 
-    // Helper function to interpolate between colors
     const interpolateColor = (color1: string, color2: string, factor: number) => {
       const r1 = parseInt(color1.substr(1, 2), 16);
       const g1 = parseInt(color1.substr(3, 2), 16);
@@ -66,23 +63,20 @@ const Index = () => {
       return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     };
 
-    // Calculate color based on type and value
     switch (type) {
-      // Metrics that improve as they increase
       case "savings":
-        return interpolateColor(red, green, Math.min(value / 40, 1)); // Full green at 40%
+        return interpolateColor(red, green, Math.min(value / 40, 1));
       case "leverage":
-        return interpolateColor(red, green, Math.min(value / 100, 1)); // Full green at 100%
+        return interpolateColor(red, green, Math.min(value / 100, 1));
       case "liquidity":
-        return interpolateColor(red, green, Math.min(value / 1000, 1)); // Full green at 1000%
+        return interpolateColor(red, green, Math.min(value / 1000, 1));
       
-      // Metrics that improve as they decrease
       case "expense":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 100)); // Full green at 0%
+        return interpolateColor(red, green, Math.max(0, 1 - value / 100));
       case "debt":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 80)); // Full green at 0%
+        return interpolateColor(red, green, Math.max(0, 1 - value / 80));
       case "solvency":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 100)); // Full green at 0%
+        return interpolateColor(red, green, Math.max(0, 1 - value / 100));
       
       default:
         return green;
@@ -149,24 +143,18 @@ const Index = () => {
             Track and improve your financial ratios
           </p>
 
-          {/* Spider Chart */}
           <div className="w-full h-[400px] bg-white rounded-lg shadow-lg p-4 mb-12">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
                 <PolarGrid />
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                {chartData.map((entry, index) => (
-                  <Radar
-                    key={entry.name}
-                    name={entry.name}
-                    dataKey="value"
-                    stroke={entry.fill}
-                    fill={entry.fill}
-                    fillOpacity={0.6}
-                    data={[chartData[index]]}
-                  />
-                ))}
+                <Radar
+                  dataKey="value"
+                  stroke={chartData[0]?.fill || "#4572D3"}
+                  fill={chartData[0]?.fill || "#4572D3"}
+                  fillOpacity={0.6}
+                />
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
