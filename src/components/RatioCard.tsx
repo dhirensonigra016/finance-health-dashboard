@@ -35,7 +35,14 @@ export const RatioCard = ({
               {value.toFixed(2)}%
             </span>
           </div>
-          <Progress value={value} className={`${colorClass} h-2`} />
+          <div className="relative pt-1">
+            <div className="overflow-hidden h-2 text-xs flex rounded bg-[#E3E3E4]">
+              <div
+                style={{ width: `${Math.min(100, value)}%` }}
+                className="bg-[#4572D3] rounded"
+              />
+            </div>
+          </div>
           <p className="text-sm text-gray-600 mt-2">{description}</p>
           <div className="mt-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-sm font-medium text-gray-800">

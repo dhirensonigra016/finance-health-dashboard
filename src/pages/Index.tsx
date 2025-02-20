@@ -137,7 +137,12 @@ const Index = () => {
             <h1 className="text-4xl font-bold text-gray-900">
               Financial Health Dashboard
             </h1>
-            <Button onClick={() => navigate("/input")}>Update Data</Button>
+            <Button 
+              onClick={() => navigate("/input")}
+              className="bg-[#4572D3] hover:bg-[#4572D3]/90"
+            >
+              Update Data
+            </Button>
           </div>
           <p className="text-lg text-gray-600 mb-8">
             Track and improve your financial ratios
@@ -146,15 +151,27 @@ const Index = () => {
           <div className="w-full h-[400px] bg-white rounded-lg shadow-lg p-4 mb-12">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-                <PolarGrid />
+                <PolarGrid stroke="#E3E3E4" />
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar
-                  dataKey="value"
-                  stroke={chartData[0]?.fill || "#4572D3"}
-                  fill={chartData[0]?.fill || "#4572D3"}
-                  fillOpacity={0.6}
-                />
+                {[
+                  "savings",
+                  "leverage",
+                  "debt",
+                  "expense",
+                  "solvency",
+                  "liquidity",
+                ].map((key, index) => (
+                  <Radar
+                    key={key}
+                    name={key}
+                    dataKey="value"
+                    data={[chartData[index]]}
+                    stroke={chartData[index]?.fill}
+                    fill={chartData[index]?.fill}
+                    fillOpacity={0.6}
+                  />
+                ))}
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
@@ -168,7 +185,7 @@ const Index = () => {
                   value={data.savings_ratio}
                   description={ratioDescriptions.savings.description}
                   recommendation={ratioDescriptions.savings.recommendation}
-                  colorClass={ratioDescriptions.savings.colorClass}
+                  colorClass={data.savings_ratio >= 20 ? "text-green-500" : "text-red-500"}
                   delay={0}
                 />
                 <RatioCard
@@ -176,7 +193,7 @@ const Index = () => {
                   value={data.expense_ratio}
                   description={ratioDescriptions.expense.description}
                   recommendation={ratioDescriptions.expense.recommendation}
-                  colorClass={ratioDescriptions.expense.colorClass}
+                  colorClass={data.expense_ratio <= 70 ? "text-green-500" : "text-red-500"}
                   delay={1}
                 />
                 <RatioCard
@@ -184,7 +201,7 @@ const Index = () => {
                   value={data.leverage_ratio}
                   description={ratioDescriptions.leverage.description}
                   recommendation={ratioDescriptions.leverage.recommendation}
-                  colorClass={ratioDescriptions.leverage.colorClass}
+                  colorClass={data.leverage_ratio <= 50 ? "text-green-500" : "text-red-500"}
                   delay={2}
                 />
                 <RatioCard
@@ -192,7 +209,7 @@ const Index = () => {
                   value={data.solvency_ratio}
                   description={ratioDescriptions.solvency.description}
                   recommendation={ratioDescriptions.solvency.recommendation}
-                  colorClass={ratioDescriptions.solvency.colorClass}
+                  colorClass={data.solvency_ratio >= 150 ? "text-green-500" : "text-red-500"}
                   delay={3}
                 />
                 <RatioCard
@@ -200,7 +217,7 @@ const Index = () => {
                   value={data.debt_to_income_ratio}
                   description={ratioDescriptions.debt.description}
                   recommendation={ratioDescriptions.debt.recommendation}
-                  colorClass={ratioDescriptions.debt.colorClass}
+                  colorClass={data.debt_to_income_ratio <= 30 ? "text-green-500" : "text-red-500"}
                   delay={4}
                 />
                 <RatioCard
@@ -208,7 +225,7 @@ const Index = () => {
                   value={data.liquidity_ratio}
                   description={ratioDescriptions.liquidity.description}
                   recommendation={ratioDescriptions.liquidity.recommendation}
-                  colorClass={ratioDescriptions.liquidity.colorClass}
+                  colorClass={data.liquidity_ratio >= 2 ? "text-green-500" : "text-red-500"}
                   delay={5}
                 />
               </>
