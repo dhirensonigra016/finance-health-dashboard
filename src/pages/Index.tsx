@@ -156,13 +156,17 @@ const Index = () => {
                 <PolarGrid />
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar
-                  name="Financial Ratios"
-                  dataKey="value"
-                  stroke="#4572D3"
-                  fill="#4572D3"
-                  fillOpacity={0.6}
-                />
+                {chartData.map((entry, index) => (
+                  <Radar
+                    key={entry.name}
+                    name={entry.name}
+                    dataKey="value"
+                    stroke={entry.fill}
+                    fill={entry.fill}
+                    fillOpacity={0.6}
+                    data={[chartData[index]]}
+                  />
+                ))}
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
