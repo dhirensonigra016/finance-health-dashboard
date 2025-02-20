@@ -43,83 +43,37 @@ const Index = () => {
     );
   }
 
-  const getColorForValue = (value: number, type: string) => {
-    const red = "#ea384c";
-    const green = "#0EA5E9";
-
-    const interpolateColor = (color1: string, color2: string, factor: number) => {
-      const r1 = parseInt(color1.substr(1, 2), 16);
-      const g1 = parseInt(color1.substr(3, 2), 16);
-      const b1 = parseInt(color1.substr(5, 2), 16);
-      
-      const r2 = parseInt(color2.substr(1, 2), 16);
-      const g2 = parseInt(color2.substr(3, 2), 16);
-      const b2 = parseInt(color2.substr(5, 2), 16);
-      
-      const r = Math.round(r1 + (r2 - r1) * factor);
-      const g = Math.round(g1 + (g2 - g1) * factor);
-      const b = Math.round(b1 + (b2 - b1) * factor);
-      
-      return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    };
-
-    switch (type) {
-      case "savings":
-        return interpolateColor(red, green, Math.min(value / 40, 1));
-      case "leverage":
-        return interpolateColor(red, green, Math.min(value / 100, 1));
-      case "liquidity":
-        return interpolateColor(red, green, Math.min(value / 1000, 1));
-      
-      case "expense":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 100));
-      case "debt":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 80));
-      case "solvency":
-        return interpolateColor(red, green, Math.max(0, 1 - value / 100));
-      
-      default:
-        return green;
-    }
-  };
-
   const chartData = data
     ? [
         {
           name: "Savings",
-          value: data.savings_ratio,
+          value: Math.min(data.savings_ratio, 100),
           fullMark: 100,
-          fill: getColorForValue(data.savings_ratio, "savings"),
-        },
-        {
-          name: "Leverage",
-          value: data.leverage_ratio,
-          fullMark: 100,
-          fill: getColorForValue(data.leverage_ratio, "leverage"),
-        },
-        {
-          name: "Debt",
-          value: data.debt_to_income_ratio,
-          fullMark: 100,
-          fill: getColorForValue(data.debt_to_income_ratio, "debt"),
         },
         {
           name: "Expense",
-          value: data.expense_ratio,
+          value: Math.min(data.expense_ratio, 100),
           fullMark: 100,
-          fill: getColorForValue(data.expense_ratio, "expense"),
+        },
+        {
+          name: "Leverage",
+          value: Math.min(data.leverage_ratio, 100),
+          fullMark: 100,
         },
         {
           name: "Solvency",
-          value: data.solvency_ratio,
+          value: Math.min(data.solvency_ratio, 100),
           fullMark: 100,
-          fill: getColorForValue(data.solvency_ratio, "solvency"),
+        },
+        {
+          name: "Debt",
+          value: Math.min(data.debt_to_income_ratio, 100),
+          fullMark: 100,
         },
         {
           name: "Liquidity",
-          value: data.liquidity_ratio,
+          value: Math.min(data.liquidity_ratio * 10, 10) * 10,
           fullMark: 100,
-          fill: getColorForValue(data.liquidity_ratio, "liquidity"),
         },
       ]
     : [];
@@ -155,45 +109,10 @@ const Index = () => {
                 <PolarAngleAxis dataKey="name" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
                 <Radar
-                  name="Savings"
+                  name="Financial Metrics"
                   dataKey="value"
-                  stroke={getColorForValue(data?.savings_ratio || 0, "savings")}
-                  fill={getColorForValue(data?.savings_ratio || 0, "savings")}
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Leverage"
-                  dataKey="value"
-                  stroke={getColorForValue(data?.leverage_ratio || 0, "leverage")}
-                  fill={getColorForValue(data?.leverage_ratio || 0, "leverage")}
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Debt"
-                  dataKey="value"
-                  stroke={getColorForValue(data?.debt_to_income_ratio || 0, "debt")}
-                  fill={getColorForValue(data?.debt_to_income_ratio || 0, "debt")}
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Expense"
-                  dataKey="value"
-                  stroke={getColorForValue(data?.expense_ratio || 0, "expense")}
-                  fill={getColorForValue(data?.expense_ratio || 0, "expense")}
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Solvency"
-                  dataKey="value"
-                  stroke={getColorForValue(data?.solvency_ratio || 0, "solvency")}
-                  fill={getColorForValue(data?.solvency_ratio || 0, "solvency")}
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Liquidity"
-                  dataKey="value"
-                  stroke={getColorForValue(data?.liquidity_ratio || 0, "liquidity")}
-                  fill={getColorForValue(data?.liquidity_ratio || 0, "liquidity")}
+                  stroke="#4572D3"
+                  fill="#4572D3"
                   fillOpacity={0.6}
                 />
                 <Tooltip />
@@ -217,7 +136,7 @@ const Index = () => {
                   value={data.expense_ratio}
                   description={ratioDescriptions.expense.description}
                   recommendation={ratioDescriptions.expense.recommendation}
-                  colorClass={data.expense_ratio <= 70 ? "text-green-500" : "text-red-500"}
+                  colorClass={data.expense_ratio <= 80 ? "text-green-500" : "text-red-500"}
                   delay={1}
                 />
                 <RatioCard
@@ -233,7 +152,7 @@ const Index = () => {
                   value={data.solvency_ratio}
                   description={ratioDescriptions.solvency.description}
                   recommendation={ratioDescriptions.solvency.recommendation}
-                  colorClass={data.solvency_ratio >= 150 ? "text-green-500" : "text-red-500"}
+                  colorClass={data.solvency_ratio >= 50 ? "text-green-500" : "text-red-500"}
                   delay={3}
                 />
                 <RatioCard
@@ -241,7 +160,7 @@ const Index = () => {
                   value={data.debt_to_income_ratio}
                   description={ratioDescriptions.debt.description}
                   recommendation={ratioDescriptions.debt.recommendation}
-                  colorClass={data.debt_to_income_ratio <= 30 ? "text-green-500" : "text-red-500"}
+                  colorClass={data.debt_to_income_ratio <= 40 ? "text-green-500" : "text-red-500"}
                   delay={4}
                 />
                 <RatioCard
@@ -249,7 +168,7 @@ const Index = () => {
                   value={data.liquidity_ratio}
                   description={ratioDescriptions.liquidity.description}
                   recommendation={ratioDescriptions.liquidity.recommendation}
-                  colorClass={data.liquidity_ratio >= 2 ? "text-green-500" : "text-red-500"}
+                  colorClass={data.liquidity_ratio >= 6 ? "text-green-500" : "text-red-500"}
                   delay={5}
                 />
               </>

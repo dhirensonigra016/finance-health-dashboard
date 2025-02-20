@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -225,7 +224,12 @@ const InputData = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit">Calculate & Update</Button>
+              <Button 
+                type="submit"
+                className="bg-[#4572D3] hover:bg-[#4572D3]/90"
+              >
+                Calculate & Update
+              </Button>
             </div>
           </form>
         </Card>
