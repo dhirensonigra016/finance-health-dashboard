@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { RatioCard } from "@/components/RatioCard";
 import { fetchFinancialData } from "@/services/financeApi";
@@ -44,21 +45,47 @@ const Index = () => {
   }
 
   const getColorForValue = (value: number, type: string) => {
+    // Colors for interpolation
+    const red = "#ea384c";
+    const green = "#0EA5E9";
+
+    // Helper function to interpolate between colors
+    const interpolateColor = (color1: string, color2: string, factor: number) => {
+      const r1 = parseInt(color1.substr(1, 2), 16);
+      const g1 = parseInt(color1.substr(3, 2), 16);
+      const b1 = parseInt(color1.substr(5, 2), 16);
+      
+      const r2 = parseInt(color2.substr(1, 2), 16);
+      const g2 = parseInt(color2.substr(3, 2), 16);
+      const b2 = parseInt(color2.substr(5, 2), 16);
+      
+      const r = Math.round(r1 + (r2 - r1) * factor);
+      const g = Math.round(g1 + (g2 - g1) * factor);
+      const b = Math.round(b1 + (b2 - b1) * factor);
+      
+      return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    };
+
+    // Calculate color based on type and value
     switch (type) {
+      // Metrics that improve as they increase
       case "savings":
-        return value < 20 ? "#ea384c" : "#0EA5E9"; // Red if < 20%, else green
-      case "expense":
-        return value > 80 ? "#ea384c" : "#0EA5E9"; // Red if > 80%, else green
+        return interpolateColor(red, green, Math.min(value / 40, 1)); // Full green at 40%
       case "leverage":
-        return value > 50 ? "#ea384c" : "#0EA5E9"; // Red if > 50%, else green
-      case "solvency":
-        return value < 50 ? "#ea384c" : "#0EA5E9"; // Red if < 50%, else green
+        return interpolateColor(red, green, Math.min(value / 100, 1)); // Full green at 100%
       case "liquidity":
-        return value < 500 ? "#ea384c" : "#0EA5E9"; // Red if < 500%, else green
+        return interpolateColor(red, green, Math.min(value / 1000, 1)); // Full green at 1000%
+      
+      // Metrics that improve as they decrease
+      case "expense":
+        return interpolateColor(red, green, Math.max(0, 1 - value / 100)); // Full green at 0%
       case "debt":
-        return value > 40 ? "#ea384c" : "#0EA5E9"; // Red if > 40%, else green
+        return interpolateColor(red, green, Math.max(0, 1 - value / 80)); // Full green at 0%
+      case "solvency":
+        return interpolateColor(red, green, Math.max(0, 1 - value / 100)); // Full green at 0%
+      
       default:
-        return "#0EA5E9";
+        return green;
     }
   };
 
