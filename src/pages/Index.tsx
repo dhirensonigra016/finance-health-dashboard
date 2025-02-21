@@ -179,7 +179,7 @@ const Index = () => {
                   value={data.liquidity_ratio}
                   description={ratioDescriptions.liquidity.description}
                   recommendation={ratioDescriptions.liquidity.recommendation}
-                  colorClass={data.liquidity_ratio >= 6 ? "text-green-500" : "text-red-500"}
+                  colorClass={data.liquidity_ratio >= 600 ? "text-green-500" : "text-red-500"}
                   delay={5}
                 />
               </>
