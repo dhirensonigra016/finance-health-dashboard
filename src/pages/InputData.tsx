@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import { getUserData, updateUserData } from "@/services/userDataApi";
+import Header from "@/components/Header";
 
 const InputData = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const InputData = () => {
   useEffect(() => {
     const currentUserId = localStorage.getItem("currentUserId");
     if (!currentUserId) {
-      navigate("/");
+      navigate("/nobias");
       return;
     }
 
@@ -119,7 +120,7 @@ const InputData = () => {
         title: "Success",
         description: "Financial data updated successfully",
       });
-      navigate("/dashboard");
+      navigate("/nobias/dashboard");
     } catch (error) {
       console.error("Error updating financial data:", error);
       toast({
@@ -134,182 +135,188 @@ const InputData = () => {
 
   if (isLoadingData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="text-gray-600">Loading your data...</p>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="text-gray-600">Loading your data...</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-2xl mx-auto"
-      >
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Update Financial Data
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Enter your financial information to calculate ratios
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="py-8 px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-2xl mx-auto"
+        >
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Update Financial Data
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Enter your financial information to calculate ratios
+            </p>
+          </div>
 
-        <Card className="p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="net_monthly_income"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Net Monthly Income
-                </label>
-                <Input
-                  id="net_monthly_income"
-                  name="net_monthly_income"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.net_monthly_income}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter net monthly income"
-                  disabled={isLoading}
-                />
+          <Card className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="net_monthly_income"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Net Monthly Income
+                  </label>
+                  <Input
+                    id="net_monthly_income"
+                    name="net_monthly_income"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.net_monthly_income}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter net monthly income"
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="net_monthly_expenses"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Net Monthly Expenses
+                  </label>
+                  <Input
+                    id="net_monthly_expenses"
+                    name="net_monthly_expenses"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.net_monthly_expenses}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter net monthly expenses"
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="net_monthly_emis"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Net Monthly EMIs
+                  </label>
+                  <Input
+                    id="net_monthly_emis"
+                    name="net_monthly_emis"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.net_monthly_emis}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter net monthly EMIs"
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="total_assets"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Total Assets
+                  </label>
+                  <Input
+                    id="total_assets"
+                    name="total_assets"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.total_assets}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter total assets"
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="total_loans"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Total Loans
+                  </label>
+                  <Input
+                    id="total_loans"
+                    name="total_loans"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.total_loans}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter total loans"
+                    disabled={isLoading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="total_liquid_assets"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Total Liquid Assets
+                  </label>
+                  <Input
+                    id="total_liquid_assets"
+                    name="total_liquid_assets"
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.total_liquid_assets}
+                    onChange={handleChange}
+                    className="block w-full"
+                    placeholder="Enter total liquid assets"
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="net_monthly_expenses"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Net Monthly Expenses
-                </label>
-                <Input
-                  id="net_monthly_expenses"
-                  name="net_monthly_expenses"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.net_monthly_expenses}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter net monthly expenses"
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate("/nobias")}
                   disabled={isLoading}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="net_monthly_emis"
-                  className="block text-sm font-medium text-gray-700"
                 >
-                  Net Monthly EMIs
-                </label>
-                <Input
-                  id="net_monthly_emis"
-                  name="net_monthly_emis"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.net_monthly_emis}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter net monthly EMIs"
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit"
+                  className="bg-[#4572D3] hover:bg-[#4572D3]/90"
                   disabled={isLoading}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="total_assets"
-                  className="block text-sm font-medium text-gray-700"
                 >
-                  Total Assets
-                </label>
-                <Input
-                  id="total_assets"
-                  name="total_assets"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.total_assets}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter total assets"
-                  disabled={isLoading}
-                />
+                  {isLoading ? "Calculating..." : "Calculate & Update"}
+                </Button>
               </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="total_loans"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Total Loans
-                </label>
-                <Input
-                  id="total_loans"
-                  name="total_loans"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.total_loans}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter total loans"
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="total_liquid_assets"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Total Liquid Assets
-                </label>
-                <Input
-                  id="total_liquid_assets"
-                  name="total_liquid_assets"
-                  type="number"
-                  step="0.01"
-                  required
-                  value={formData.total_liquid_assets}
-                  onChange={handleChange}
-                  className="block w-full"
-                  placeholder="Enter total liquid assets"
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => navigate("/")}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit"
-                className="bg-[#4572D3] hover:bg-[#4572D3]/90"
-                disabled={isLoading}
-              >
-                {isLoading ? "Calculating..." : "Calculate & Update"}
-              </Button>
-            </div>
-          </form>
-        </Card>
-      </motion.div>
+            </form>
+          </Card>
+        </motion.div>
+      </div>
     </div>
   );
 };
