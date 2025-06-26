@@ -1,15 +1,17 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
-import { updateFinancialData } from "@/services/financeApi";
+import { getUserData, updateUserData } from "@/services/userDataApi";
 
 const InputData = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [userId, setUserId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     net_monthly_income: "",
     net_monthly_expenses: "",
@@ -18,6 +20,39 @@ const InputData = () => {
     total_loans: "",
     total_liquid_assets: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
+  useEffect(() => {
+    const currentUserId = localStorage.getItem("currentUserId");
+    if (!currentUserId) {
+      navigate("/");
+      return;
+    }
+
+    setUserId(currentUserId);
+    loadExistingData(currentUserId);
+  }, [navigate]);
+
+  const loadExistingData = async (id: string) => {
+    try {
+      const userData = await getUserData(id);
+      if (userData) {
+        setFormData({
+          net_monthly_income: userData.net_monthly_income?.toString() || "",
+          net_monthly_expenses: userData.net_monthly_expenses?.toString() || "",
+          net_monthly_emis: userData.net_monthly_emis?.toString() || "",
+          total_assets: userData.total_assets?.toString() || "",
+          total_loans: userData.total_loans?.toString() || "",
+          total_liquid_assets: userData.total_liquid_assets?.toString() || "",
+        });
+      }
+    } catch (error) {
+      console.error("Error loading existing data:", error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,33 +82,66 @@ const InputData = () => {
 
     return {
       savings_ratio:
-        ((net_monthly_income - net_monthly_expenses) / net_monthly_income) * 100,
-      expense_ratio: (net_monthly_expenses / net_monthly_income) * 100,
-      leverage_ratio: (total_loans / total_assets) * 100,
-      solvency_ratio: ((total_assets - total_loans) / total_assets) * 100,
-      liquidity_ratio: (total_liquid_assets / net_monthly_income) * 100,
-      debt_to_income_ratio: (net_monthly_emis / net_monthly_income) * 100,
+        net_monthly_income > 0 ? ((net_monthly_income - net_monthly_expenses) / net_monthly_income) * 100 : 0,
+      expense_ratio: 
+        net_monthly_income > 0 ? (net_monthly_expenses / net_monthly_income) * 100 : 0,
+      leverage_ratio: 
+        total_assets > 0 ? (total_loans / total_assets) * 100 : 0,
+      solvency_ratio: 
+        total_assets > 0 ? ((total_assets - total_loans) / total_assets) * 100 : 0,
+      liquidity_ratio: 
+        net_monthly_income > 0 ? (total_liquid_assets / net_monthly_income) * 100 : 0,
+      debt_to_income_ratio: 
+        net_monthly_income > 0 ? (net_monthly_emis / net_monthly_income) * 100 : 0,
     };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userId) return;
+
+    setIsLoading(true);
     try {
       const ratios = calculateRatios(formData);
-      await updateFinancialData(ratios);
+      const financialData = {
+        net_monthly_income: parseFloat(formData.net_monthly_income) || 0,
+        net_monthly_expenses: parseFloat(formData.net_monthly_expenses) || 0,
+        net_monthly_emis: parseFloat(formData.net_monthly_emis) || 0,
+        total_assets: parseFloat(formData.total_assets) || 0,
+        total_loans: parseFloat(formData.total_loans) || 0,
+        total_liquid_assets: parseFloat(formData.total_liquid_assets) || 0,
+        ...ratios,
+      };
+
+      await updateUserData(userId, financialData);
+      
       toast({
         title: "Success",
         description: "Financial data updated successfully",
       });
       navigate("/dashboard");
     } catch (error) {
+      console.error("Error updating financial data:", error);
       toast({
         title: "Error",
         description: "Failed to update financial data",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoadingData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-600">Loading your data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -112,6 +180,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter net monthly income"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -132,6 +201,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter net monthly expenses"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -152,6 +222,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter net monthly EMIs"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -172,6 +243,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter total assets"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -192,6 +264,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter total loans"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -212,6 +285,7 @@ const InputData = () => {
                   onChange={handleChange}
                   className="block w-full"
                   placeholder="Enter total liquid assets"
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -221,14 +295,16 @@ const InputData = () => {
                 type="button"
                 variant="outline"
                 onClick={() => navigate("/")}
+                disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button 
                 type="submit"
                 className="bg-[#4572D3] hover:bg-[#4572D3]/90"
+                disabled={isLoading}
               >
-                Calculate & Update
+                {isLoading ? "Calculating..." : "Calculate & Update"}
               </Button>
             </div>
           </form>

@@ -4,15 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
+import { createUserData, getUserDataByEmail } from "@/services/userDataApi";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,11 +26,46 @@ const Home = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Store user data in localStorage for now
-    localStorage.setItem("userData", JSON.stringify(formData));
-    navigate("/input");
+    setIsLoading(true);
+
+    try {
+      // Check if user already exists
+      const existingUser = await getUserDataByEmail(formData.email);
+      
+      let userId: string;
+      
+      if (existingUser) {
+        // User exists, store their ID for the next page
+        userId = existingUser.id!;
+        toast({
+          title: "Welcome back!",
+          description: "We found your existing data. You can update your financial information.",
+        });
+      } else {
+        // Create new user
+        const newUser = await createUserData(formData);
+        userId = newUser.id!;
+        toast({
+          title: "Profile created!",
+          description: "Let's get your financial health assessment.",
+        });
+      }
+
+      // Store user ID in localStorage for the input page
+      localStorage.setItem("currentUserId", userId);
+      navigate("/input");
+    } catch (error) {
+      console.error("Error handling user data:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -73,6 +112,7 @@ const Home = () => {
                 onChange={handleChange}
                 className="block w-full"
                 placeholder="Enter your full name"
+                disabled={isLoading}
               />
             </div>
 
@@ -92,6 +132,7 @@ const Home = () => {
                 onChange={handleChange}
                 className="block w-full"
                 placeholder="Enter your phone number"
+                disabled={isLoading}
               />
             </div>
 
@@ -111,14 +152,16 @@ const Home = () => {
                 onChange={handleChange}
                 className="block w-full"
                 placeholder="Enter your email address"
+                disabled={isLoading}
               />
             </div>
 
             <Button 
               type="submit"
               className="w-full bg-[#4572D3] hover:bg-[#4572D3]/90 text-lg py-3"
+              disabled={isLoading}
             >
-              Get My Financial Health
+              {isLoading ? "Processing..." : "Get My Financial Health"}
             </Button>
           </form>
         </Card>

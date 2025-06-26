@@ -9,7 +9,69 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      user_data: {
+        Row: {
+          created_at: string
+          debt_to_income_ratio: number | null
+          email: string
+          expense_ratio: number | null
+          id: string
+          leverage_ratio: number | null
+          liquidity_ratio: number | null
+          name: string
+          net_monthly_emis: number | null
+          net_monthly_expenses: number | null
+          net_monthly_income: number | null
+          phone: string
+          savings_ratio: number | null
+          solvency_ratio: number | null
+          total_assets: number | null
+          total_liquid_assets: number | null
+          total_loans: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          debt_to_income_ratio?: number | null
+          email: string
+          expense_ratio?: number | null
+          id?: string
+          leverage_ratio?: number | null
+          liquidity_ratio?: number | null
+          name: string
+          net_monthly_emis?: number | null
+          net_monthly_expenses?: number | null
+          net_monthly_income?: number | null
+          phone: string
+          savings_ratio?: number | null
+          solvency_ratio?: number | null
+          total_assets?: number | null
+          total_liquid_assets?: number | null
+          total_loans?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          debt_to_income_ratio?: number | null
+          email?: string
+          expense_ratio?: number | null
+          id?: string
+          leverage_ratio?: number | null
+          liquidity_ratio?: number | null
+          name?: string
+          net_monthly_emis?: number | null
+          net_monthly_expenses?: number | null
+          net_monthly_income?: number | null
+          phone?: string
+          savings_ratio?: number | null
+          solvency_ratio?: number | null
+          total_assets?: number | null
+          total_liquid_assets?: number | null
+          total_loans?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
