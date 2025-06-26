@@ -65,7 +65,7 @@ const InputData = () => {
         title: "Success",
         description: "Financial data updated successfully",
       });
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Error",
