@@ -9,13 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      quiz_responses: {
+        Row: {
+          created_at: string
+          id: string
+          is_correct: boolean
+          question_index: number
+          score: number
+          total_questions: number
+          updated_at: string
+          user_answer: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_correct: boolean
+          question_index: number
+          score: number
+          total_questions?: number
+          updated_at?: string
+          user_answer: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          question_index?: number
+          score?: number
+          total_questions?: number
+          updated_at?: string
+          user_answer?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_data: {
         Row: {
+          age_range: string | null
           created_at: string
           debt_to_income_ratio: number | null
           email: string
           expense_ratio: number | null
           id: string
+          income_range: string | null
           leverage_ratio: number | null
           liquidity_ratio: number | null
           name: string
@@ -31,11 +69,13 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          age_range?: string | null
           created_at?: string
           debt_to_income_ratio?: number | null
           email: string
           expense_ratio?: number | null
           id?: string
+          income_range?: string | null
           leverage_ratio?: number | null
           liquidity_ratio?: number | null
           name: string
@@ -51,11 +91,13 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          age_range?: string | null
           created_at?: string
           debt_to_income_ratio?: number | null
           email?: string
           expense_ratio?: number | null
           id?: string
+          income_range?: string | null
           leverage_ratio?: number | null
           liquidity_ratio?: number | null
           name?: string

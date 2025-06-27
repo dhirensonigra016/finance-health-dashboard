@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -12,12 +12,28 @@ import Header from "@/components/Header";
 const Home = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // Auto-fill form data from URL parameters
+  useEffect(() => {
+    const nameParam = searchParams.get('name');
+    const emailParam = searchParams.get('email');
+    const phoneParam = searchParams.get('phone');
+
+    if (nameParam || emailParam || phoneParam) {
+      setFormData({
+        name: nameParam || "",
+        phone: phoneParam || "",
+        email: emailParam || "",
+      });
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
