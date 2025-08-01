@@ -76,6 +76,8 @@ export const getUserDataByEmail = async (email: string): Promise<UserData | null
     .from('user_data')
     .select('*')
     .eq('email', email)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .maybeSingle();
 
   if (error) {
