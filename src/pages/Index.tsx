@@ -200,6 +200,7 @@ const Index = () => {
                 value={data.savings_ratio}
                 description={ratioDescriptions.savings.description}
                 recommendation={ratioDescriptions.savings.recommendation}
+                improvement={ratioDescriptions.savings.improvement}
                 colorClass={data.savings_ratio >= 20 ? "text-green-500" : "text-red-500"}
                 delay={0}
               />
@@ -208,6 +209,7 @@ const Index = () => {
                 value={data.expense_ratio}
                 description={ratioDescriptions.expense.description}
                 recommendation={ratioDescriptions.expense.recommendation}
+                improvement={ratioDescriptions.expense.improvement}
                 colorClass={data.expense_ratio <= 80 ? "text-green-500" : "text-red-500"}
                 delay={1}
               />
@@ -216,6 +218,7 @@ const Index = () => {
                 value={data.leverage_ratio}
                 description={ratioDescriptions.leverage.description}
                 recommendation={ratioDescriptions.leverage.recommendation}
+                improvement={ratioDescriptions.leverage.improvement}
                 colorClass={data.leverage_ratio <= 50 ? "text-green-500" : "text-red-500"}
                 delay={2}
               />
@@ -224,6 +227,7 @@ const Index = () => {
                 value={data.solvency_ratio}
                 description={ratioDescriptions.solvency.description}
                 recommendation={ratioDescriptions.solvency.recommendation}
+                improvement={ratioDescriptions.solvency.improvement}
                 colorClass={data.solvency_ratio >= 50 ? "text-green-500" : "text-red-500"}
                 delay={3}
               />
@@ -232,6 +236,7 @@ const Index = () => {
                 value={data.debt_to_income_ratio}
                 description={ratioDescriptions.debt.description}
                 recommendation={ratioDescriptions.debt.recommendation}
+                improvement={ratioDescriptions.debt.improvement}
                 colorClass={data.debt_to_income_ratio <= 40 ? "text-green-500" : "text-red-500"}
                 delay={4}
               />
@@ -240,6 +245,7 @@ const Index = () => {
                 value={data.liquidity_ratio}
                 description={ratioDescriptions.liquidity.description}
                 recommendation={ratioDescriptions.liquidity.recommendation}
+                improvement={ratioDescriptions.liquidity.improvement}
                 colorClass={data.liquidity_ratio >= 600 ? "text-green-500" : "text-red-500"}
                 delay={5}
               />

@@ -8,6 +8,7 @@ interface RatioCardProps {
   value: number;
   description: string;
   recommendation: string;
+  improvement: string;
   colorClass: string;
   delay: number;
 }
@@ -17,6 +18,7 @@ export const RatioCard = ({
   value,
   description,
   recommendation,
+  improvement,
   colorClass,
   delay,
 }: RatioCardProps) => {
@@ -49,6 +51,14 @@ export const RatioCard = ({
               Recommendation:
               <span className="text-gray-600 ml-2 font-normal">
                 {recommendation}
+              </span>
+            </p>
+          </div>
+          <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+            <p className="text-sm font-medium text-gray-800">
+              How to improve?
+              <span className="text-gray-600 ml-2 font-normal">
+                {improvement}
               </span>
             </p>
           </div>
