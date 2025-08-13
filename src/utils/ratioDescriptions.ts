@@ -4,7 +4,6 @@ export const ratioDescriptions = {
     title: "Savings Ratio",
     description: "Percentage of income saved after expenses",
     recommendation: "Aim to save at least 20% of your monthly income",
-    improvement: "Budget and save more each month!",
     colorClass: "text-ratio-savings",
   },
   expense: {
