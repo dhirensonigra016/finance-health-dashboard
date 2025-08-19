@@ -176,23 +176,6 @@ const Index = () => {
               Track and improve your financial ratios
             </p>
 
-            <div className="w-full h-[400px] bg-white rounded-lg shadow-lg p-4 mb-12">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={orderedChartData}>
-                  <PolarGrid stroke="#E3E3E4" />
-                  <PolarAngleAxis dataKey="name" />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                  <Radar
-                    name="Financial Metrics"
-                    dataKey="value"
-                    stroke="#4572D3"
-                    fill="#4572D3"
-                    fillOpacity={0.6}
-                  />
-                  <Tooltip />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <RatioCard
@@ -202,6 +185,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.savings.recommendation}
                 improvement={ratioDescriptions.savings.improvement}
                 colorClass={data.savings_ratio >= 20 ? "text-green-500" : "text-red-500"}
+                barColor={data.savings_ratio >= 20 ? "#10b981" : "#ef4444"}
                 delay={0}
               />
               <RatioCard
@@ -211,6 +195,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.expense.recommendation}
                 improvement={ratioDescriptions.expense.improvement}
                 colorClass={data.expense_ratio <= 80 ? "text-green-500" : "text-red-500"}
+                barColor={data.expense_ratio <= 80 ? "#10b981" : "#ef4444"}
                 delay={1}
               />
               <RatioCard
@@ -220,6 +205,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.leverage.recommendation}
                 improvement={ratioDescriptions.leverage.improvement}
                 colorClass={data.leverage_ratio <= 50 ? "text-green-500" : "text-red-500"}
+                barColor={data.leverage_ratio <= 50 ? "#10b981" : "#ef4444"}
                 delay={2}
               />
               <RatioCard
@@ -229,6 +215,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.solvency.recommendation}
                 improvement={ratioDescriptions.solvency.improvement}
                 colorClass={data.solvency_ratio >= 50 ? "text-green-500" : "text-red-500"}
+                barColor={data.solvency_ratio >= 50 ? "#10b981" : "#ef4444"}
                 delay={3}
               />
               <RatioCard
@@ -238,6 +225,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.debt.recommendation}
                 improvement={ratioDescriptions.debt.improvement}
                 colorClass={data.debt_to_income_ratio <= 40 ? "text-green-500" : "text-red-500"}
+                barColor={data.debt_to_income_ratio <= 40 ? "#10b981" : "#ef4444"}
                 delay={4}
               />
               <RatioCard
@@ -247,6 +235,7 @@ const Index = () => {
                 recommendation={ratioDescriptions.liquidity.recommendation}
                 improvement={ratioDescriptions.liquidity.improvement}
                 colorClass={data.liquidity_ratio >= 600 ? "text-green-500" : "text-red-500"}
+                barColor={data.liquidity_ratio >= 600 ? "#10b981" : "#ef4444"}
                 delay={5}
               />
             </div>

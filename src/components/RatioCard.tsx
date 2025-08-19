@@ -10,6 +10,7 @@ interface RatioCardProps {
   recommendation: string;
   improvement: string;
   colorClass: string;
+  barColor: string;
   delay: number;
 }
 
@@ -20,6 +21,7 @@ export const RatioCard = ({
   recommendation,
   improvement,
   colorClass,
+  barColor,
   delay,
 }: RatioCardProps) => {
   return (
@@ -40,8 +42,11 @@ export const RatioCard = ({
           <div className="relative pt-1">
             <div className="overflow-hidden h-2 text-xs flex rounded bg-[#E3E3E4]">
               <div
-                style={{ width: `${Math.min(100, value)}%` }}
-                className="bg-[#4572D3] rounded"
+                style={{ 
+                  width: `${Math.min(100, value)}%`,
+                  backgroundColor: barColor
+                }}
+                className="rounded"
               />
             </div>
           </div>
